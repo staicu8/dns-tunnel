@@ -1,6 +1,6 @@
 # DNS Tunnel
 
-## What it is and the problem it solves
+## Overview
 
 This project transfers a file through DNS TXT responses. The client requests metadata and numbered file chunks, retries failed requests, stores progress locally, and validates the completed transfer with MD5. This shows how a reliable file transfer layer can be built on top of DNS and UDP.
 
@@ -11,6 +11,14 @@ This project transfers a file through DNS TXT responses. The client requests met
 - UDP sockets for DNS transport
 - Base64 for chunk encoding
 - JSON state files and MD5 integrity checks for resumable downloads
+
+## Project structure
+
+- `tunel_server.py` — DNS server that returns file metadata and numbered TXT chunks.
+- `tunel_client.py` — downloads chunks, retries failed requests, resumes state, and validates MD5.
+- `dns_test.py` — minimal DNS response server used for testing.
+- `files/test.txt` — sample file available for transfer.
+- `requirements.txt` — Python dependency list.
 
 ## Running it
 
