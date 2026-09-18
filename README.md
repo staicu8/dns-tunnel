@@ -1,27 +1,30 @@
-# DNS Tunnel pentru transfer de fișiere
+# DNS Tunnel
 
-Demonstrație educațională de transfer de fișiere prin răspunsuri DNS TXT. Clientul cere metadatele și bucățile unui fișier, reia transferurile întrerupte și verifică rezultatul cu MD5.
+## What it is and the problem it solves
 
-## Componente
+This project transfers a file through DNS TXT responses. The client requests metadata and numbered file chunks, retries failed requests, stores progress locally, and validates the completed transfer with MD5. This shows how a reliable file transfer layer can be built on top of DNS and UDP.
 
-- `tunel_server.py` implementează serverul DNS autoritativ pentru zonă și servește fișierele din `files/`.
-- `tunel_client.py` solicită fișierul în bucăți, are retry și păstrează `.part`/`.state` pentru reluare.
-- `dns_test.py` este un server minimal folosit la testare.
+## Tech stack
 
-## Cerințe
+- Python 3
+- dnslib for DNS message construction and parsing
+- UDP sockets for DNS transport
+- Base64 for chunk encoding
+- JSON state files and MD5 integrity checks for resumable downloads
+
+## Running it
+
+Install the dependency, configure `ZONA` and `IP_SERVER` in `tunel_server.py` for your DNS setup, then start the server and client.
 
 ```bash
+cd tunel_dns
 pip install -r requirements.txt
-```
 
-Ai nevoie de un server autorizat să asculte pe UDP/53 și de o zonă DNS delegată către el. Înainte de rulare, configurează `ZONA` și `IP_SERVER` din server pentru infrastructura ta.
-
-```bash
-# pe server
+# server
 python tunel_server.py
 
-# pe client
-python tunel_client.py test.txt <adresa-resolverului>
+# client
+python tunel_client.py test.txt <resolver-ip>
 ```
 
-Folosește acest cod numai într-un mediu controlat sau pentru infrastructura pe care o administrezi. Fișierele private și descărcările parțiale sunt ignorate de Git.
+The server reads files from `files/`; the client writes incomplete downloads as `.part` and `.state` files before renaming a verified transfer.
