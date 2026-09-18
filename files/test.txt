@@ -1,0 +1,1 @@
+Acesta este mesajul secret transferat prin tunelul DNS
